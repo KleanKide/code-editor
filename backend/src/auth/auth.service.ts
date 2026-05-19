@@ -23,7 +23,14 @@ export class AuthService {
   signToken(user: { id: string; email: string }) {
     return this.jwtService.sign({
       sub: user.id,
-      emal: user.email,
+      email: user.email,
     });
+  }
+  async getMe(userId: string) {
+    const user = await this.usersService.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return user;
   }
 }

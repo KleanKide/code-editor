@@ -41,4 +41,19 @@ export class UsersService {
     });
     return this.usersRepository.save(user);
   }
+
+  findById(id: string) {
+    return this.usersRepository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        avatar: true,
+        googleId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
 }

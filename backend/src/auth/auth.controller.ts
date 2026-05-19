@@ -34,13 +34,15 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.redirect(
-      `${this.configService.getOrThrow<string>('FRONTEND_URL')}`,
+      `${this.configService.getOrThrow<string>('FRONTEND_URL')}/dashboard`,
     );
   }
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   me(@Req() req: express.Request) {
-    return req.user;
+    const jwtUser = req.user as { id: string };
+    const user = this.authService.getMe(jwtUser.id);
+    return user;
   }
 
   @Post('logout')

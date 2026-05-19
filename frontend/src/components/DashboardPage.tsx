@@ -18,10 +18,10 @@ function DashboardPage() {
     },[])
         console.log(loggedUser)
   return (
-    <>
-    <img  src={loggedUser?.avatar} alt="avatar" />
-    <h1>Добро пожаловать {loggedUser?.name}</h1>
-    </>
+    <div className='flex justify-center gap-2'>
+    <img className = 'rounded-4xl'src={loggedUser?.avatar} alt="avatar" />
+    <p className='text-5xl'>Добро пожаловать {loggedUser?.name}</p>
+    </div>
   )
 }
 

@@ -22,16 +22,39 @@ export class ProjectsService {
     return this.projectRepository.save(project);
   }
 
-  findAll() {
-    return `This action returns all projects`;
+  findAll(userId: string) {
+    return this.projectRepository.find({
+      where: {
+        owner: {
+          id: userId,
+        },
+      },
+    });
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} project`;
+  findOne(userId: string, id: string) {
+    return this.projectRepository.findOne({
+      where: {
+        id: id,
+        owner: {
+          id: userId,
+        },
+      },
+    });
   }
 
-  update(id: string, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: string, updateProjectDto: UpdateProjectDto, userId: string) {
+    const project = await this.projectRepository.findOne({
+      where: {
+        id,
+        owner: {
+          id: userId,
+        },
+      },
+    });
+    if (!project) return;
+    Object.assign(project, updateProjectDto);
+    return this.projectRepository.save(project);
   }
 
   remove(id: string) {

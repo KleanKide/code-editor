@@ -37,21 +37,28 @@ export class ProjectsController {
   }
 
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  @UseGuards(AuthGuard('jwt'))
+  findAll(@Req() req: RequestWithUser) {
+    return this.projectsService.findAll(req.user.id);
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.projectsService.findOne(id);
+  @UseGuards(AuthGuard('jwt'))
+  findOne(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.projectsService.findOne(req.user.id, id);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateProjectDto: UpdateProjectDto,
+    @Req() req: RequestWithUser,
   ) {
-    return this.projectsService.update(id, updateProjectDto);
+    return this.projectsService.update(id, updateProjectDto, req.user.id);
   }
 
   @Delete(':id')

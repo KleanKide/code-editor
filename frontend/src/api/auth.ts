@@ -18,3 +18,44 @@ export async function getMe (): Promise<Me | null>  {
     return res.json()
 
 }
+
+export type Project = {
+  id: string;
+  name: string;
+  code: string;
+  language: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export async function getProject(id: string): Promise<Project> {
+    const res = await fetch(`${API_URL}/projects/${id}`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+    if(!res.ok){
+        throw new Error('no projects')
+    }
+    return res.json()
+}
+
+export async function getProjects(): Promise<Project[]> {
+    const res = await fetch(`${API_URL}/projects`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+    if(!res.ok){
+        throw new Error('no projects')
+    }
+    return res.json()
+}
+export async function getOneProject(id: string): Promise<Project | null> {
+    const res = await fetch(`${API_URL}/projects/${id}`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+    if(!res.ok){
+        throw new Error('no projects')
+    }
+    return res.json()
+}

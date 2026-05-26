@@ -1,7 +1,9 @@
+import { Project } from 'src/projects/entities/project.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,6 +24,9 @@ export class User {
 
   @Column({ unique: true, nullable: true })
   googleId?: string;
+
+  @OneToMany(() => Project, (project) => project.owner)
+  projects: Project[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -10,8 +10,8 @@ services:
     runtime: node
     plan: free
     rootDir: backend
-    buildCommand: npm install && npm run build
-    startCommand: npm run start:prod
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm run build
+    startCommand: pnpm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
@@ -36,7 +36,7 @@ services:
     name: my-yandex-code-frontend
     runtime: static
     rootDir: frontend
-    buildCommand: npm install && npm run build
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm run build
     staticPublishPath: frontend/dist
     routes:
       - type: rewrite

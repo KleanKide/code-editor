@@ -11,25 +11,25 @@ import {
 @Entity('Project')
 export class Project {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ type: 'text', default: '' })
-  code: string;
+  code!: string;
 
   @Column({ default: 'javascript' })
-  language: string;
+  language!: string;
 
   @ManyToOne(() => User, (user) => user.projects, {
     onDelete: 'CASCADE',
   })
-  owner: User;
+  owner!: User;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

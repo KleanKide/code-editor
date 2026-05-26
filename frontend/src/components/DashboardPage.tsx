@@ -8,7 +8,7 @@ function DashboardPage() {
     async function loader() {
       const user = await getMe();
       if (!user) {
-        window.location.href = "/login";
+        window.location.href = "/";
         return;
       }
       setLoggedUser(user);

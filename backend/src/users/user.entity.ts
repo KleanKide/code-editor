@@ -11,10 +11,10 @@ import {
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column({ nullable: true })
   name?: string;
@@ -26,11 +26,11 @@ export class User {
   googleId?: string;
 
   @OneToMany(() => Project, (project) => project.owner)
-  projects: Project[];
+  projects!: Project[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

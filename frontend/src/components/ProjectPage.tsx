@@ -7,13 +7,16 @@ import Editor from "@monaco-editor/react";
 const API_URL = import.meta.env.VITE_API_URL;
 function ProjectPage() {
   const { projectId } = useParams<{ projectId: string }>();
-  const [project, setProject] = useState<Project | null>();
-  const [code, setCode] = useState(project?.code);
+  const [project, setProject] = useState<Project | null>(null);
+  const [code, setCode] = useState("");
 
   useEffect(() => {
     if (!projectId) return;
     getOneProject(projectId)
       .then((userProject) => {
+        if (!userProject) {
+          return;
+        }
         setProject(userProject);
         setCode(userProject.code);
       })

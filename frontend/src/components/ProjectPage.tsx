@@ -45,6 +45,7 @@ function ProjectPage() {
         <Editor
           height="100vh"
           language="javascript"
+          theme="vs-dark"
           value={code}
           onChange={handleChange}
         />

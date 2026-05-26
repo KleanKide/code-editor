@@ -8,6 +8,7 @@ function EditorPage() {
       <Editor
         height="100vh"
         language="javascript"
+        theme="vs-dark"
         value={code}
         onChange={(value) => {
           setCode(value ?? '');

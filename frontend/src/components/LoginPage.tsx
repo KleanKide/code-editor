@@ -1,9 +1,33 @@
-import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getMe } from "../api/auth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function LoginPage() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function checkSession() {
+      const user = await getMe();
+
+      if (!user) {
+        return;
+      }
+
+      const next = searchParams.get("next");
+
+      if (next) {
+        navigate(next, { replace: true });
+        return;
+      }
+
+      navigate("/dashboard", { replace: true });
+    }
+
+    void checkSession();
+  }, [navigate, searchParams]);
 
   function handleLogin() {
     const next = searchParams.get("next");

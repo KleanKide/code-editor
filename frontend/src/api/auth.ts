@@ -1,5 +1,15 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
+export class ApiError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 export type Me = {
   id: string;
   email: string;
@@ -42,8 +52,12 @@ export async function getProject(id: string): Promise<Project> {
     credentials: "include",
   });
 
+  if (res.status === 401) {
+    throw new ApiError("unauthorized", 401);
+  }
+
   if (!res.ok) {
-    throw new Error("no projects");
+    throw new ApiError("no projects", res.status);
   }
 
   return res.json();
@@ -54,23 +68,6 @@ export async function getProjects(): Promise<Project[]> {
     method: "GET",
     credentials: "include",
   });
-
-  if (!res.ok) {
-    throw new Error("no projects");
-  }
-
-  return res.json();
-}
-
-export async function getOneProject(id: string): Promise<Project | null> {
-  const res = await fetch(`${API_URL}/projects/${id}`, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (res.status === 401) {
-    throw new Error("unauthorized");
-  }
 
   if (!res.ok) {
     throw new Error("no projects");

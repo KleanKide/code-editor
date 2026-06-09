@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  ApiError,
   createOrGetProjectInvite,
   getMe,
-  getOneProject,
+  getProject,
   type Project,
 } from "../api/auth";
 import { useNavigate, useParams } from "react-router-dom";
@@ -63,23 +64,23 @@ function ProjectPage() {
         return;
       }
 
-      getOneProject(currentProjectId)
+      getProject(currentProjectId)
         .then((userProject) => {
-          if (!userProject) {
-            setAccessError(
-              "You do not have access to this project yet. Open it through an invite link first.",
-            );
-            return;
-          }
-
           setAccessError("");
           setProject(userProject);
         })
-        .catch((error: Error) => {
-          if (error.message === "unauthorized") {
+        .catch((error: unknown) => {
+          if (error instanceof ApiError && error.status === 401) {
             navigate(`/?next=${encodeURIComponent(`/projects/${currentProjectId}`)}`, {
               replace: true,
             });
+            return;
+          }
+
+          if (error instanceof ApiError && error.status === 404) {
+            setAccessError(
+              "You do not have access to this project yet. Open it through an invite link first.",
+            );
             return;
           }
 

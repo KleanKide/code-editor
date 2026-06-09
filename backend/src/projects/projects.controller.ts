@@ -15,6 +15,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { CreateProjectInviteDto } from './dto/create-project-invite.dto';
 
 type RequestWithUser = Request & {
   user: {
@@ -42,6 +43,32 @@ export class ProjectsController {
     return this.projectsService.findAll(req.user.id);
   }
 
+  @Post(':id/invite-link')
+  @UseGuards(AuthGuard('jwt'))
+  createOrGetInvite(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() createProjectInviteDto: CreateProjectInviteDto,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.projectsService.createOrGetInvite(
+      id,
+      req.user.id,
+      createProjectInviteDto,
+    );
+  }
+
+  @Get('invite-links/:token')
+  @UseGuards(AuthGuard('jwt'))
+  getInvite(@Param('token') token: string) {
+    return this.projectsService.getInviteByToken(token);
+  }
+
+  @Post('invite-links/:token/accept')
+  @UseGuards(AuthGuard('jwt'))
+  acceptInvite(@Param('token') token: string, @Req() req: RequestWithUser) {
+    return this.projectsService.acceptInvite(token, req.user.id);
+  }
+
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
   findOne(
@@ -62,7 +89,11 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  remove(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.projectsService.remove(id);
+  @UseGuards(AuthGuard('jwt'))
+  remove(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.projectsService.remove(id, req.user.id);
   }
 }

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import DashboardPage from './components/DashboardPage';
 import LoginPage from './components/LoginPage'
+import InvitePage from './components/InvitePage';
 import ProjectPage from './components/ProjectPage';
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/invite/:token" element={<InvitePage />} />
       <Route path="/projects/:projectId" element={<ProjectPage />} />
     </Routes>
     </>

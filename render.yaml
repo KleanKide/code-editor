@@ -10,6 +10,7 @@ services:
     runtime: node
     plan: free
     rootDir: backend
+    healthCheckPath: /
     buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm run build
     startCommand: pnpm run start:prod
     envVars:

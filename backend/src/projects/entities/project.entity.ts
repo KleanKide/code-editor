@@ -1,9 +1,11 @@
 import { User } from 'src/users/user.entity';
+import { ProjectMember } from './project-member.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,6 +28,9 @@ export class Project {
     onDelete: 'CASCADE',
   })
   owner!: User;
+
+  @OneToMany(() => ProjectMember, (member) => member.project)
+  members!: ProjectMember[];
 
   @CreateDateColumn()
   createdAt!: Date;
